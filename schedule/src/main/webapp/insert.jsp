@@ -15,13 +15,17 @@
    <section>
    <%@ include file="top.jsp" %>
       <div class="title">스케줄 등록하기</div>
-      <form name="frm" action="insert">
-         <input type="hidden" id="GUBUN" value="insert">
+      <form name="frm" action="add">
+         <input type="hidden" id="GUBUN" value="add">
          <div class="wrapper">
 
          <table>
+         <tr>
+            <th>일정아이디</th>
+            <td><input type="text" name="Event_id" ></td>
+            </tr>
             <tr>
-            <th>내용</th>
+            <th>일정이름</th>
             <td><input type="text" name="Event_name" ></td>
             </tr>
             <tr>
@@ -31,6 +35,11 @@
             <tr>
             <th>일정마무리 날짜</th>
             <td><input type="text" name="End_date"></td>
+            </tr>
+            <tr>
+             <tr>
+            <th>내용</th>
+            <td><input type="text" name="Story"></td>
             </tr>
             <tr>
             <td colspan="2">

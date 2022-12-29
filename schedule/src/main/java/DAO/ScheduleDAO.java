@@ -24,7 +24,7 @@ public class ScheduleDAO {
 	      return con;
 }
 	   
-	   public String add(HttpServletRequest request,HttpServletResponse response) {
+	   public String selectAll(HttpServletRequest request,HttpServletResponse response) {
 		      ArrayList<Events> list = new ArrayList<Events>();
 		      try {
 		         conn = getConnection();//db연결
@@ -39,12 +39,12 @@ public class ScheduleDAO {
 		         System.out.println("0");
 		         
 		         while (rs.next()) {
-		        	 Events member = new Events();
-		            member.setEvent_name(rs.getString(1));
-		            member.setStrat_date(rs.getString(2));
-		            member.setEnd_date(rs.getString(3));
+		        	 Events events = new Events();
+		        	 events.setEvent_name(rs.getString(1));
+		        	 events.setStrat_date(rs.getString(2));
+		        	 events.setEnd_date(rs.getString(3));
 		            
-		            list.add(member);
+		            list.add(events);
 		         }
 		         
 		         request.setAttribute("list", list);
@@ -59,4 +59,38 @@ public class ScheduleDAO {
 		      
 		      return "insert.jsp";
 	   }
+	   
+	   public int add(HttpServletRequest request, HttpServletResponse response) {
+		   	int Event_id =Integer.parseInt(request.getParameter("Event_id"));
+			String Event_name = request.getParameter("Event_name").trim();
+			String Strat_date = request.getParameter("Strat_date").trim();
+			String End_date = request.getParameter("End_date").trim();
+			String Story = request.getParameter("Story").trim();
+			int result = 0;
+			
+			try {
+				conn = getConnection();
+				
+				String sql = "INSERT INTO events";
+				sql += " values(?,?,TO_DATE(?, 'YY/MM/DD'),TO_DATE(?, 'YY/MM/DD'),?)";
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, Event_id);
+				ps.setString(2, Event_name);
+				ps.setString(3, Strat_date);
+				ps.setString(4, End_date);
+				ps.setString(5, Story);
+				
+	
+				result = ps.executeUpdate();
+				System.out.println(result);
+				
+				conn.close();
+				ps.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return result;
+		}
 }

@@ -41,25 +41,55 @@ public class ScheduleController extends HttpServlet {
 	      String context = request.getContextPath();
 	      //주소중에 맨 끝 파일명만 가져온다. (경로의 맨 끝 파일명을 가져온다.)
 	      String command = request.getServletPath();
-	      String site = null;
+	      String site = "";
 	      System.out.println(context + "," + command);
 	      
-	      ScheduleDAO member = new ScheduleDAO();
+	      ScheduleDAO events = new ScheduleDAO();
 	      
 	      switch (command) {
-	      case "/insert" :
-	         site = "insert.jsp";
+	      case "/home" :
+	         site = "index.jsp";
 	         break;
-//	      case "/search" :
-//           site = member.add(request, response);
-//	         break;
-//	      case "/vote": 
-//		    	site = "vote.jsp";
-//		    	break;
-//		    case "/insert":
-//		    	int result = member.insert(request, response); 
+	      case "/search" :
+	             site = events.selectAll(request, response);
+		         break;
+	      case "/insert" :
+	             site = "insert.jsp";
+		         break;
+	      case "/add" :
+	    	  int result = events.add(request, response); 
+		         response.setContentType("text/html; charset=UTF-8");
+		         PrintWriter out = response.getWriter();
+		         
+		         if(result == 1) {
+		            out.println("<script>");
+		            out.println(" alert('일정이 정상적으로 등록되었습니다!!'); location.href='" + context + "';");
+		            out.println("</script>");
+//		            out.flush();
+		         } else {
+		            out.println("<script>");
+		            out.println(" alert('일정이 정상적으로 등록되지 않았습니다'); location.href='" + context + "';");
+		            out.println("</script>");
+//		            out.flush();
+		         } 
+		    	break;
+//	      case "/insert":
+//		    	int result = events.insert(request, response); 
 //		         response.setContentType("text/html; charset=UTF-8");
 //		         PrintWriter out = response.getWriter();
+//		         
+//		         if(result == 1) {
+//		            out.println("<script>");
+//		            out.println(" alert('일정이 정상적으로 등록되었습니다!!'); location.href='" + context + "';");
+//		            out.println("</script>");
+//		            out.flush();
+//		         } else {
+//		            out.println("<script>");
+//		            out.println(" alert('일정이 정상적으로 등록되지 않았습니다'); location.href='" + context + "';");
+//		            out.println("</script>");
+//		            out.flush();
+//		         } 
+//		    	break;
 //		         
 //		         if(result == 1) {
 //		            out.println("<script>");
